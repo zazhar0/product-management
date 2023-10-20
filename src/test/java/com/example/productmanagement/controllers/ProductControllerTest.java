@@ -5,6 +5,7 @@ import com.example.productmanagement.beans.CustomResponse;
 import com.example.productmanagement.models.Product;
 import com.example.productmanagement.services.ProductService;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -12,6 +13,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -36,18 +39,26 @@ public class ProductControllerTest {
     @MockBean
     private CustomResponse customResponse;
 
+    @MockBean
+    private List<Product> productsList;
 
-    @Test
-    public void addProductTest() throws Exception {
 
+    @BeforeEach
+    private void setup() throws Exception {
         when(product.getProductId()).thenReturn(1);
         when(product.getProductName()).thenReturn("testMockProd");
         when(product.getPrice()).thenReturn(120D);
         when(product.getQuantity()).thenReturn(12);
 
         when(productService.insertProduct(any(Product.class))).thenReturn(product);
-        when(customResponse.getRespMessage()).thenReturn("Product Created SuccessFully");
+        when(customResponse.getRespMessage()).thenReturn("Product Deleted SuccessFully");
         when(customResponse.getProduct()).thenReturn(product);
+
+
+    }
+
+    @Test
+    public void addProductTest() throws Exception {
 
         String requestBody = objectMapper.writeValueAsString(product);
         String responseBody = objectMapper.writeValueAsString(customResponse);
@@ -66,15 +77,6 @@ public class ProductControllerTest {
     @Test
     public void deleteProductTest() throws Exception {
 
-        when(product.getProductId()).thenReturn(1);
-        when(product.getProductName()).thenReturn("testMockProd");
-        when(product.getPrice()).thenReturn(120D);
-        when(product.getQuantity()).thenReturn(12);
-
-        when(productService.insertProduct(any(Product.class))).thenReturn(product);
-        when(customResponse.getRespMessage()).thenReturn("Product Deleted SuccessFully");
-        when(customResponse.getProduct()).thenReturn(product);
-
         String requestBody = objectMapper.writeValueAsString(product);
         String responseBody = objectMapper.writeValueAsString(customResponse);
 
@@ -87,5 +89,6 @@ public class ProductControllerTest {
 
 
     }
+
 
 }
