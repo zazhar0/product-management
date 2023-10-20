@@ -39,4 +39,25 @@ public class ProductController {
     }
 
 
+    @PostMapping(value = "delete")
+    public ResponseEntity<CustomResponse> deleteProduct(@RequestBody @NonNull Product product) {
+        try {
+            productService.deleteProduct(product);
+            customResponse.setRespMessage("Product deleted Successfully");
+            customResponse.setProduct(product);
+        }
+        catch (Exception e) {
+            customResponse.setRespMessage("Following Error Occured while deleting product: " + e.getMessage());
+            customResponse.setProduct(product);
+            return new ResponseEntity(customResponse, HttpStatus.PRECONDITION_FAILED);
+        }
+
+
+        return ResponseEntity.ok(customResponse);
+    }
+
+
+
+
+
 }

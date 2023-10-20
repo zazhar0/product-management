@@ -24,7 +24,15 @@ public class ProductService {
     }
         return productRepository.save(product);
 
+    }
 
+
+    @Transactional
+    public void deleteProduct(Product product) throws Exception {
+        if (productRepository.findById(product.getProductId()).isEmpty()) {
+            throw new Exception("Product Not Present");
+        }
+        productRepository.deleteById(product.getProductId());
     }
 
 
