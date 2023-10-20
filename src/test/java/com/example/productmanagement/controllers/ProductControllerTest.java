@@ -56,8 +56,34 @@ public class ProductControllerTest {
                         .contentType(MediaType.APPLICATION_JSON).content(requestBody)
                 )
                 .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(
-                        jsonPath("$.respMessage").value("Product Created SuccessFully")
+                        jsonPath("$.product.productName").value("testMockProd")
                 );
+
+
+    }
+
+
+    @Test
+    public void deleteProductTest() throws Exception {
+
+        when(product.getProductId()).thenReturn(1);
+        when(product.getProductName()).thenReturn("testMockProd");
+        when(product.getPrice()).thenReturn(120D);
+        when(product.getQuantity()).thenReturn(12);
+
+        when(productService.insertProduct(any(Product.class))).thenReturn(product);
+        when(customResponse.getRespMessage()).thenReturn("Product Deleted SuccessFully");
+        when(customResponse.getProduct()).thenReturn(product);
+
+        String requestBody = objectMapper.writeValueAsString(product);
+        String responseBody = objectMapper.writeValueAsString(customResponse);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/products/add")
+                        .contentType(MediaType.APPLICATION_JSON).content(requestBody)
+                )
+                .andExpect(status().isOk()).andExpect(content().contentType(MediaType.APPLICATION_JSON)).andExpect(
+                        jsonPath("$.respMessage").value("Product Deleted SuccessFully")
+                ).andExpect(jsonPath("$.product.productId").value(1));
 
 
     }
