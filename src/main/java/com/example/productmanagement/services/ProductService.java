@@ -7,6 +7,9 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class ProductService {
 
@@ -33,6 +36,13 @@ public class ProductService {
             throw new Exception("Product Not Present");
         }
         productRepository.deleteById(product.getProductId());
+    }
+
+
+    public List<Product> showAllProducts() throws Exception {
+        List<Product> productsList = new ArrayList<>();
+        productRepository.findAll().forEach(productsList::add);
+        return productsList;
     }
 
 

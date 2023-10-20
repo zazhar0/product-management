@@ -56,6 +56,22 @@ public class ProductController {
         return ResponseEntity.ok(customResponse);
     }
 
+    @PostMapping(value = "index")
+    public ResponseEntity<CustomResponse> showAllProducts() {
+        try {
+            customResponse.setRespMessage("Products List");
+            customResponse.setProductsList(productService.showAllProducts());
+            customResponse.setProduct(null);
+        }
+        catch (Exception e) {
+            customResponse.setRespMessage("Following Error Occured while deleting product: " + e.getMessage());
+            return new ResponseEntity(customResponse, HttpStatus.PRECONDITION_FAILED);
+        }
+
+
+        return ResponseEntity.ok(customResponse);
+    }
+
 
 
 
